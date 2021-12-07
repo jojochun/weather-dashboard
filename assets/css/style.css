@@ -27,3 +27,16 @@ h1 {
 h3 {
   float: left;
 }
+
+.low-green {
+  color: green;
+}
+
+.moderate-yellow {
+  color: yellow;
+}
+
+.severe-red {
+  background-color: red;
+  color: white;
+}

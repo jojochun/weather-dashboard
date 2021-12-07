@@ -17,97 +17,70 @@
   </head>
 
   <body class="flex-column min-100-vh">
-    <div class="container">
-      <header class="hero bg-dark">
+    
+    <header class="hero bg-dark">
         <h1 class="header-style">Weather Dashboard</h1>
-      </header>
+    </header>
 
-      <main class="flex-row justify-space-between">
-        <div class="col-4 bg-light">
-          <div class="card">Search for a City:</div>
-
-          <form class="input-group mb-3">
-            <input
-              type="text"
-              id="search-city"
-              class="form-control"
-              placeholder="Enter city name"
-              aria-label="Enter city name"
-            />
-            <!-- search button-->
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button" id="search-btn">
-                <i class="fas fa-search"></i>
-              </button>
+      <main class="container-fluid">
+        <div class="row">
+          <div class="col-3 border-1 bg-light">
+            <div class="card">
+              <h3>Search for a City:</h3>
             </div>
-          </form>
 
-          <!-- search city history-->
-          <div>
-            <button class="btn btn-secondary" type="button" id="clear-btn">
-              <i class="fas fa-times-circle"></i>
-            </button>
+              <form class="row border input-group ml-3">
+                <input
+                type="text"
+                id="search-city"
+                class="form-control"
+                placeholder="Enter city name"
+                aria-label="Enter city name"/>
+                <!-- search button-->
+                <button class="btn btn-primary" type="button" id="search-btn">
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+                <!-- searchCity history-->
+              <div class="row border m-3" id="past-search"></div>
           </div>
-
-          <!-- left column / list -->
-          <div class="list-group" id="history"></div>
+  
+          <!-- current conditions -->
+          <div class="col-9">
+            <div class="row m-3 border rounded" id="current-city">
+              <h2 class="city-name bolder" id="current-city"></h2>
+            </div>
+            <div class="row m-3" id="city-info">
+              <p>Temperature:<span class="current" id="temperature"></span></p>
+              <p>Humidity:<span class="current" id="humidity"></span></p>
+              <p>Wind Speed:<span class="current" id="wind-speed"></span></p>
+              <p>UV index:<span
+                  class="current rounded py-2 px-2 text-white"
+                  id="uv-index"></span></p>
+            </div>
+          </div>
         </div>
 
-        <div class="col-8">
-          <!-- row for current conditions -->
-          <div class="row ml-2 border border-dark rounded">
-              <div class="col-sm-12 card" id="current-weather">
-                 <h3 class="city-name bolder" id="current-city"></h3>
-                 <p>Temperature:<span class="current" id="temperature"></span></p>
-                 <p>Humidity:<span class="current" id="humidity"></span></p>
-                 <p>Wind Speed:<span class="current" id="wind-speed"></span></p>
-                 <p>
-                  UV index:<span
-                  class="current bg-danger rounded py-2 px-2 text-white"
-                  id="uv-index"
-                  ></span>
-                   </p>
-               </div>
-           </div>
-
            <!-- row for future conditions -->
-           <div class="row ml-2 border border-dark rounded">
-               <div class="col-sm-12 card" id="future-weather">
-                   <h3>5-Day Forecast:</h3>
-                   <div class="row text-light">
-                    <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded" >
-                        <p id="Day0"></p>
-                        <p id="Img0"></p>
-                        <p>Temp:<span id="Temp0"></span></p>
-                        <p>Humidity:<span id="Humidity0"></span>0</p>
+           <div class="row ml-2 border border-dark rounded" id="future-weather">
+             <div class="col-12" id="five-day">
+                <h2>5-Day Forecast:</h2>
+                <div class="d-flex" id="five-day-container">
+                  <div class="card bg-primary text-white mr-2 flex-fill rounded 4">  
+                    <div class="card-body flex-fill">
+                      
                     </div>
-                    <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded" >
-                        <p id="Day1"></p>
-                        <p id="Img1"></p>
-                        <p>Temp:<span id="Temp1"></span></p>
-                        <p>Humidity:<span id="Humidity1"></span>1</p>
-                    </div>
-                    <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded">
-                        <p id="Day2"></p>
-                        <p id="Img2"></p>
-                        <p>Temp:<span id="Temp2"></span></p>
-                        <p>Humidity:<span id="Humidity2"></span>2</p>
-                    </div>
-                    <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded">
-                        <p id="Day3"></p>
-                        <p id="Img3"></p>
-                        <p>Temp:<span id="Temp3"></span></p>
-                        <p>Humidity:<span id="Humidity3"></span>3</p>
-                    </div>
-                    <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2 rounded" >
-                        <p id="Day4"></p>
-                        <p id="Img4"></p>
-                        <p>Temp:<span id="Temp4"></span></p>
-                        <p>Humidity:<span id="Humidity4"></span>4</p>
-                    </div>
-                    
+
+
+
+
+                  </div>
+
+
+
 
                 </div>
+              </div>
           </div>
         </div>
       </main>
