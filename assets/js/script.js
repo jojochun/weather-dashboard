@@ -7,6 +7,7 @@ var currentHumidityEl = $("#humidity");
 var currentWindEl = $("#wind-speed");
 var currentUVEl = $("#uv-index");
 var pastHistoryEl = $("#past-search")
+var submitEl = $("#submit-form")
 
 
 
@@ -15,38 +16,50 @@ var APIKey = "be713046da2f1520bb5a2702cd2e8948";
 
 
 // get input for city
-function searchCity() {
-    var searchCityEl = $("#search-city");
+function searchCity(event, cityBtn) {
+    if (event) {
 
-    // get value form input element
-    var city = searchCityEl.val();
-    if (city) {
-        // add to searchHistory array
-        searchHistory.push(city.toUpperCase());
-        currentWeather(city);           // send element to currentWeather
-        forecastFive(city);             // send element to forecastFive
-
-        searchCityEl.val("");           // clear input field
+        event.preventDefault()
+    }
+    if (cityBtn) {
+        currentWeather(cityBtn);           // send element to currentWeather
+        forecastFive(cityBtn);             // send element to forecastFive
 
     } else {
-        alert("Please enter a city");
-    }
-    saveSearch();
 
+        var searchCityEl = $("#search-city");
+
+        // get value form input element
+        var city = searchCityEl.val();
+        if (city) {
+            // add to searchHistory array
+            searchHistory.push(city.toUpperCase());
+            currentWeather(city);           // send element to currentWeather
+            forecastFive(city);             // send element to forecastFive
+
+            searchCityEl.val("");           // clear input field
+
+        } else {
+            alert("Please enter a city");
+        }
+        saveSearch();
+    }
 }
 
 // function to save city searched
 function saveSearch() {
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    getStored()
 }
 
 
 // get value from stored data from previous searches
 //array to store searched cities
 var searchHistory = [];
-function getStored(event) {
-    event.preventDefault();
+function getStored() {
+    pastHistoryEl.empty()
     var storedCities = JSON.parse(localStorage.getItem("searchHistory"));
+
     if (storedCities !== null) {
         searchHistory = storedCities;
         for (var i = 0; i < searchHistory.length; i++) {
@@ -55,22 +68,27 @@ function getStored(event) {
             // append a button to pastHistoryBtnlEl
             pastHistoryBtnEl.innerHTML = "<button type='button' class='d-flex w-100 btn-light border p-2' attr='" + searchHistory[i] + "'>" + searchHistory[i] + "</button>";
             // append li item to div
-            pastHistoryEl.appendChild(pastHistoryBtnEl);
+            pastHistoryEl.append(pastHistoryBtnEl);
+
 
         }
     }
-    // display the past search if the list group item is clicked
-    var pastHistoryBtnEl = event.target;
-    if (event.target.matches(pastHistoryEl)) {
-        city = pastHistoryEl.textContent.trim();
-        searchCity(city);
-    }
+
 
 
 }
 
 
+function pastSearchBtn(event) {
+    // display the past search if the list group item is clicked
+    var pastHistoryBtnEl = event.target;
+    if (event.target.matches("button")) {
+        city = pastHistoryBtnEl.textContent.trim();
+        console.log(city)
+        searchCity(false, city);
+    }
 
+}
 
 
 
@@ -97,14 +115,14 @@ function currentWeather(city) {
                     $(currentCityEl).html(city + date + "<img src=" + iconUrl + ">");
 
                     // temp in degreeF
-                    var temp = (data.main.temp - 273.15) * 1.80 + 32;
-                    $(currentTempEl).html("Temperature: " + temp + "&#8457");
+                    var temp = Math.round((data.main.temp - 273.15) * 1.80 + 32);
+                    $(currentTempEl).html(temp + "&#8457");
                     // humidity
                     var humidity = data.main.humidity;
-                    $(currentHumidityEl).html("Humidity: " + humidity);
+                    $(currentHumidityEl).html(humidity + " %");
                     // wind speed
                     var windSpeed = data.wind.speed;
-                    $(currentWindEl).html("Wind Speed: " + windSpeed);
+                    $(currentWindEl).html(windSpeed + " MPH");
                     // uv index, need var lat and var lon to make a url request
                     var lat = data.coord.lat;
                     var lon = data.coord.lon;
@@ -164,24 +182,24 @@ function forecastFive(city) {
                         console.log(forecastDay.dt, "forecastDay" + i, date, formatDate)
 
                         dateEl = document.createElement("h4");
-                        $(dateEl).attr("card-header text-center");
+                        $(dateEl).attr("card-header ");
                         $(dateEl).html(formatDate);
                         fiveDayContainer.append(dateEl);
 
 
                         // icon
-                        var iconUrl = "https://openweathermap.org/img/wn/" + forecastDay.weather[0].icon + ".png";
-                        iconEl = document.createElement("img");
-                        $(iconEl).attr("card-body text-center");
-                        $(iconEl).html("<img src=" + iconUrl + ">");
+                        var iconUrl = "https://openweathermap.org/img/wn/" + forecastDay.weather[0].icon + "@2x.png";
+                        var iconEl = $("<img>");
+                        iconEl.attr("card-body ");
+                        iconEl.attr("src", iconUrl);
                         fiveDayContainer.append(iconEl);
 
 
 
                         // temp
-                        var temp = (forecastDay.main.temp - 273.15) * 1.80 + 32;
+                        var temp = Math.round((forecastDay.main.temp - 273.15) * 1.80 + 32);
                         tempEl = document.createElement("h5");
-                        $(tempEl).attr("card-body text-center");
+                        $(tempEl).attr("card-body ");
                         $(tempEl).html("Temperature: " + temp + "&#8457");
                         fiveDayContainer.append(tempEl);
 
@@ -189,28 +207,18 @@ function forecastFive(city) {
                         //humidity
                         var humidity = forecastDay.main.humidity;
                         humidityEl = document.createElement("h5");
-                        $(humidityEl).attr("card-body text-center");
-                        $(humidityEl).html("Humidity: " + humidity);
+                        $(humidityEl).attr("card-body ");
+                        $(humidityEl).html("Humidity: " + humidity + " %");
                         fiveDayContainer.append(humidityEl);
-
-
-
-
-
                     }
-
-
-
-
-
                 })
         }
     })
 }
 
 
-
+getStored()
 
 // save searchedCity to list
-searchBtnEl.click(searchCity)
-
+submitEl.submit(searchCity)
+pastHistoryEl.click(pastSearchBtn)
