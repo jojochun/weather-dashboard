@@ -86,7 +86,7 @@ function currentWeather(city) {
             if (response.ok) {
 
                 response.json().then(function (data) {
-                    console.log(data)
+                    //console.log(data)
                     // get date using moment js
                     var date = moment().format(" MM/DD/YYYY");
                     // icon code from response
@@ -114,7 +114,7 @@ function currentWeather(city) {
                         if (response.ok) {
                             response.json()
                                 .then(function (data) {
-                                    console.log(data)
+                                    // console.log(data)
                                 })
                         }
                     })
@@ -124,16 +124,17 @@ function currentWeather(city) {
                                 response.json()
                                     .then(function (data) {
 
-                                        console.log(data)
+                                        //console.log(data)
                                         currentUVEl.text(data.value)
                                         // if: between values, add class (ie. low or high), 3 if statements
                                         if (data.value < 2) {
-                                            $(currentUVEl).attr("class", "low-green");
-                                        };
-                                        if (data.value > 2 && data.value <= 5) {
+                                            //console.log(data.value, "data value <2")
+                                            $(currentUVEl).attr("class", "low-green")
+                                        } else if (data.value > 2 && data.value <= 5) {
+                                            // console.log(data.value, "data value > 2 and 5")
                                             $(currentUVEl).attr("class", "moderate-yellow");
-                                        };
-                                        if (data.value > 5); {
+                                        } else {
+                                            // console.log(data.value, "data value > 5")
                                             $(currentUVEl).attr("class", "severe-red");
                                         };
                                     })
@@ -152,23 +153,24 @@ function forecastFive(city) {
         if (response.ok) {
             response.json()
                 .then(function (data) {
-                    console.log(data)
+                    //console.log(data)
                     // for loop for day1 to day5 of fiveDay forecast
                     for (var i = 0; i < 5; i++) {
                         // date
                         var fiveDayContainer = $("#five-day-container");
-                        var forecastDay = data.list[i]
-                        var date = moment(forecastDay.dt).format("MMM D, YYYY")
-
+                        var forecastDay = data.list[i * 8]                      // data  given is every 3 hours, so multiply by 8 to get every 24hrs
+                        var date = new Date(parseInt(forecastDay.dt) * 1000)
+                        var formatDate = moment(date).format("MMM D, YYYY")
+                        console.log(forecastDay.dt, "forecastDay" + i, date, formatDate)
 
                         dateEl = document.createElement("h4");
                         $(dateEl).attr("card-header text-center");
-                        $(dateEl).html(date);
+                        $(dateEl).html(formatDate);
                         fiveDayContainer.append(dateEl);
 
 
                         // icon
-                        var iconUrl = "https://openweathermap.org/img/w/" + forecastDay.weather[0].icon + ".png";
+                        var iconUrl = "https://openweathermap.org/img/wn/" + forecastDay.weather[0].icon + ".png";
                         iconEl = document.createElement("img");
                         $(iconEl).attr("card-body text-center");
                         $(iconEl).html("<img src=" + iconUrl + ">");

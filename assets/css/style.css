@@ -29,11 +29,13 @@ h3 {
 }
 
 .low-green {
-  color: green;
+  background-color: green;
+  color: white;
 }
 
 .moderate-yellow {
-  color: yellow;
+  background-color: yellow;
+  color: white;
 }
 
 .severe-red {
