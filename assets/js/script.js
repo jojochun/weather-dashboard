@@ -1,4 +1,3 @@
-
 var searchBtnEl = $("#search-btn");
 var clearBtnEl = $("#clear-btn");
 var currentCityEl = $("#current-city");
@@ -6,9 +5,9 @@ var currentTempEl = $("#temperature");
 var currentHumidityEl = $("#humidity");
 var currentWindEl = $("#wind-speed");
 var currentUVEl = $("#uv-index");
-var pastHistoryEl = $("#past-search")
-var submitEl = $("#submit-form")
-
+var pastHistoryEl = $("#past-search");
+var submitEl = $("#submit-form");
+var clearBtnEl = $("#clear");
 
 
 // var APIkey = be713046da2f1520bb5a2702cd2e8948
@@ -69,15 +68,9 @@ function getStored() {
             pastHistoryBtnEl.innerHTML = "<button type='button' class='d-flex w-100 btn-light border p-2' attr='" + searchHistory[i] + "'>" + searchHistory[i] + "</button>";
             // append li item to div
             pastHistoryEl.append(pastHistoryBtnEl);
-
-
         }
     }
-
-
-
 }
-
 
 function pastSearchBtn(event) {
     // display the past search if the list group item is clicked
@@ -89,9 +82,6 @@ function pastSearchBtn(event) {
     }
 
 }
-
-
-
 
 function currentWeather(city) {
     // query url to make the API call 
@@ -173,19 +163,19 @@ function forecastFive(city) {
                 .then(function (data) {
                     //console.log(data)
                     // for loop for day1 to day5 of fiveDay forecast
+                    var fiveDayContainer = $("#five-day-container");gi
                     for (var i = 0; i < 5; i++) {
                         // date
-                        var fiveDayContainer = $("#five-day-container");
+
                         var forecastDay = data.list[i * 8]                      // data  given is every 3 hours, so multiply by 8 to get every 24hrs
                         var date = new Date(parseInt(forecastDay.dt) * 1000)
                         var formatDate = moment(date).format("MMM D, YYYY")
                         console.log(forecastDay.dt, "forecastDay" + i, date, formatDate)
 
-                        dateEl = document.createElement("h4");
+                        dateEl = document.createElement("h5");
                         $(dateEl).attr("card-header ");
                         $(dateEl).html(formatDate);
                         fiveDayContainer.append(dateEl);
-
 
                         // icon
                         var iconUrl = "https://openweathermap.org/img/wn/" + forecastDay.weather[0].icon + "@2x.png";
@@ -194,21 +184,18 @@ function forecastFive(city) {
                         iconEl.attr("src", iconUrl);
                         fiveDayContainer.append(iconEl);
 
-
-
                         // temp
                         var temp = Math.round((forecastDay.main.temp - 273.15) * 1.80 + 32);
-                        tempEl = document.createElement("h5");
+                        var tempEl = document.createElement("p")
                         $(tempEl).attr("card-body ");
-                        $(tempEl).html("Temperature: " + temp + "&#8457");
+                        $(tempEl).html("Temperature " + temp + "&#8457");
                         fiveDayContainer.append(tempEl);
-
 
                         //humidity
                         var humidity = forecastDay.main.humidity;
-                        humidityEl = document.createElement("h5");
+                        humidityEl = document.createElement("p");
                         $(humidityEl).attr("card-body ");
-                        $(humidityEl).html("Humidity: " + humidity + " %");
+                        $(humidityEl).html("Humidity " + humidity + " %");
                         fiveDayContainer.append(humidityEl);
                     }
                 })
@@ -216,9 +203,21 @@ function forecastFive(city) {
     })
 }
 
+// clear localStorage
+function clearHistory() {
+    searchHistory = [];
+    console.log(searchHistory)
+    pastHistoryEl.empty()
+
+}
+
+
+
+
+
+clearBtnEl.click(clearHistory)
 
 getStored()
 
-// save searchedCity to list
 submitEl.submit(searchCity)
 pastHistoryEl.click(pastSearchBtn)
