@@ -16,6 +16,7 @@ var APIKey = "be713046da2f1520bb5a2702cd2e8948";
 
 // get input for city
 function searchCity(event, cityBtn) {
+    // fiveDay forecast is empty
     if (event) {
 
         event.preventDefault()
@@ -163,7 +164,8 @@ function forecastFive(city) {
                 .then(function (data) {
                     //console.log(data)
                     // for loop for day1 to day5 of fiveDay forecast
-                    var fiveDayContainer = $("#five-day-container");gi
+                    var fiveDayContainer = $("#five-day-container");
+                    fiveDayContainer.empty()
                     for (var i = 0; i < 5; i++) {
                         // date
 
@@ -172,7 +174,7 @@ function forecastFive(city) {
                         var formatDate = moment(date).format("MMM D, YYYY")
                         console.log(forecastDay.dt, "forecastDay" + i, date, formatDate)
 
-                        dateEl = document.createElement("h5");
+                        var dateEl = document.createElement("h5");
                         $(dateEl).attr("card-header ");
                         $(dateEl).html(formatDate);
                         fiveDayContainer.append(dateEl);
@@ -208,6 +210,7 @@ function clearHistory() {
     searchHistory = [];
     console.log(searchHistory)
     pastHistoryEl.empty()
+    localStorage.clear()
 
 }
 
