@@ -168,7 +168,7 @@ function forecastFive(city) {
                     fiveDayContainer.empty()
                     for (var i = 0; i < 5; i++) {
                         // date
-
+                        var newCard = $("<div>").attr("class", "col fiveDay bg-primary text-white rounded-lg p-2");
                         var forecastDay = data.list[i * 8]                      // data  given is every 3 hours, so multiply by 8 to get every 24hrs
                         var date = new Date(parseInt(forecastDay.dt) * 1000)
                         var formatDate = moment(date).format("MMM D, YYYY")
@@ -177,28 +177,32 @@ function forecastFive(city) {
                         var dateEl = document.createElement("h5");
                         $(dateEl).attr("card-header ");
                         $(dateEl).html(formatDate);
-                        fiveDayContainer.append(dateEl);
+                        newCard.append(dateEl);     // card append
 
                         // icon
                         var iconUrl = "https://openweathermap.org/img/wn/" + forecastDay.weather[0].icon + "@2x.png";
                         var iconEl = $("<img>");
                         iconEl.attr("card-body ");
                         iconEl.attr("src", iconUrl);
-                        fiveDayContainer.append(iconEl);
+                        newCard.append(iconEl);     //card append
 
                         // temp
                         var temp = Math.round((forecastDay.main.temp - 273.15) * 1.80 + 32);
                         var tempEl = document.createElement("p")
                         $(tempEl).attr("card-body ");
                         $(tempEl).html("Temperature " + temp + "&#8457");
-                        fiveDayContainer.append(tempEl);
+                        newCard.append(tempEl);     //card append
 
                         //humidity
                         var humidity = forecastDay.main.humidity;
                         humidityEl = document.createElement("p");
                         $(humidityEl).attr("card-body ");
-                        $(humidityEl).html("Humidity " + humidity + " %");
-                        fiveDayContainer.append(humidityEl);
+                        $(humidityEl).html("Humidity " + humidity + "%");
+                        newCard.append(humidityEl);             //card append
+
+
+                        //append the card to the five day container
+                        fiveDayContainer.append(newCard)
                     }
                 })
         }
