@@ -86,7 +86,7 @@ function pastSearchBtn(event) {
 
 function currentWeather(city) {
     // query url to make the API call 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
 
     // make a get request to url
     fetch(queryURL)
